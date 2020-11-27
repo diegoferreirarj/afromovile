@@ -15,7 +15,7 @@ repositories {
 	mavenCentral()
 }
 
-val mockkVersion = "1.10.0"
+val mockkVersion = "1.10.2"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")

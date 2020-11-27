@@ -19,11 +19,14 @@ import reactor.kotlin.core.publisher.toMono
 @ExtendWith(MockKExtension::class)
 internal class UserHandlerTest {
 
-    @InjectMockKs private lateinit var handler: UserHandler
+    @InjectMockKs
+    private lateinit var handler: UserHandler
 
-    @MockK private lateinit var service: UserService
+    @MockK
+    private lateinit var service: UserService
 
-    @MockK private lateinit var request: ServerRequest
+    @MockK
+    private lateinit var request: ServerRequest
 
     @Test
     fun findAll() {

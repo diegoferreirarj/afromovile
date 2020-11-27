@@ -20,7 +20,6 @@ class ApplicationConfiguration {
         GET("/users", userHandler::findAll)
         GET("/users/{id}", userHandler::findById)
         POST("/users", userHandler::save)
-        PUT("/users", userHandler::save)
         DELETE("/users/{id}", userHandler::delete)
     }
 
@@ -29,7 +28,6 @@ class ApplicationConfiguration {
         GET("/products", productHandler::findAll)
         GET("/products/{id}", productHandler::findById)
         POST("/products", productHandler::save)
-        PUT("/products", productHandler::save)
         DELETE("/products/{id}", productHandler::delete)
     }
 

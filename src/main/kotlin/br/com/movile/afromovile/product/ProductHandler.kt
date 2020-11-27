@@ -17,7 +17,8 @@ class ProductHandler(private val service: ProductService) {
     suspend fun findAll(request: ServerRequest): ServerResponse = ServerResponse.ok().bodyAndAwait(service.findAll())
 
     suspend fun save(request: ServerRequest): ServerResponse {
-        val product = service.save(request.awaitBody())
+        val body = request.awaitBody(ProductDto::class)
+        val product = service.save(body)
 
         return ServerResponse.status(HttpStatus.CREATED).bodyValueAndAwait(product)
     }
