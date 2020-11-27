@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
@@ -40,7 +39,6 @@ internal class WebfluxProductTestIT(
     @Test
     fun `list of users`() {
         val products = mutableListOf<Product>()
-
         runBlocking { productRepository.findAll().toList(products) }
 
         val response = client.get()

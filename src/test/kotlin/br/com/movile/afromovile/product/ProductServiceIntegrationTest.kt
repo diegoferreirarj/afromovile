@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-internal class ProductServiceIntegrationTestTest(
+internal class ProductServiceIntegrationTest(
     @Autowired private val service: ProductService,
     @Autowired private val repository: ProductRepository
 ) {
