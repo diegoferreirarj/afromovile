@@ -31,8 +31,7 @@ internal class WebfluxProductTestIT(
         )
     }
 
-    @BeforeEach
-    fun beforeEach() {
+    init {
         runBlocking {
             productRepository.saveAll(PRODUCTS).count()
         }
@@ -96,7 +95,8 @@ internal class WebfluxProductTestIT(
 
         assertThat(response)
                 .isNotNull
-                .isEqualToComparingOnlyGivenFields(productDto, "name", "description")
+                .usingRecursiveComparison()
+                .ignoringFields("id")
     }
 
 }

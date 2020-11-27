@@ -1,7 +1,6 @@
 package br.com.movile.afromovile.user
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
@@ -27,8 +26,7 @@ internal class WebfluxUserTestIT(
         )
     }
 
-    @BeforeEach
-    fun beforeEach() {
+    init {
         userRepository.saveAll(USERS).subscribe()
     }
 
@@ -53,12 +51,12 @@ internal class WebfluxUserTestIT(
 
     @Test
     fun `existing user returns OK`() {
-        val expectedUser = userRepository.findAll()
-                .collectList().block()?.firstOrNull { it.id != null && it.id == 1L }?.toDto()
+        val expectedUser = userRepository.findAll().collectList().block()?.firstOrNull { it.id != null }?.toDto()
+
         assertThat(expectedUser).isNotNull
 
         val response = client.get()
-                .uri("/users/1")
+                .uri("/users/${expectedUser?.id}")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk
@@ -88,7 +86,8 @@ internal class WebfluxUserTestIT(
 
         assertThat(response)
                 .isNotNull
-                .isEqualToComparingOnlyGivenFields(newUser, "name", "email")
+                .usingRecursiveComparison()
+                .ignoringFields("id")
     }
 
 }
