@@ -15,6 +15,8 @@ repositories {
 	mavenCentral()
 }
 
+val mockkVersion = "1.10.0"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -27,6 +29,7 @@ dependencies {
 	runtimeOnly("io.r2dbc:r2dbc-h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 tasks.withType<Test> {

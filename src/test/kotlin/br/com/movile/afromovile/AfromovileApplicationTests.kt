@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest
 class AfromovileApplicationTests {
 
 	@Test
-	fun contextLoads() {
+	fun `satisfaction of having all the test coverage`() {
+		main(arrayOf())
 	}
 
 }
