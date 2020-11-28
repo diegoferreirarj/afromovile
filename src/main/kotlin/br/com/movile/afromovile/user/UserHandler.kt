@@ -15,28 +15,29 @@ import reactor.kotlin.core.publisher.toMono
 class UserHandler(private val userService: UserService) {
 
     fun findAll(request: ServerRequest): Mono<ServerResponse> =
-            ServerResponse.ok().json().body(userService.findAll(), UserDto::class.java)
+        ServerResponse.ok().json().body(userService.findAll(), UserDto::class.java)
 
-    fun save(request: ServerRequest): Mono<ServerResponse> =
-        request.bodyToMono<UserDto>()
-                .flatMap { ServerResponse.status(CREATED).body(userService.save(it), UserDto::class.java) }
-                .onErrorResume { ServerResponse.badRequest().build() }
+    fun save(request: ServerRequest): Mono<ServerResponse> = request
+        .bodyToMono<UserDto>()
+        .map { userService.save(it) }
+        .flatMap { ServerResponse.status(CREATED).json().body(it, UserDto::class.java) }
+        .onErrorResume { ServerResponse.badRequest().build() }
 
     fun delete(request: ServerRequest): Mono<ServerResponse> = request
-            .pathVariable("id")
-            .toMono()
-            .map { it.toLong() }
-            .flatMap { userService.findById(it) }
-            .flatMap { userService.delete(it.id!!).then(ServerResponse.noContent().build()) }
-            .switchIfEmpty { ServerResponse.notFound().build() }
-            .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
+        .pathVariable("id")
+        .toMono()
+        .map { it.toLong() }
+        .flatMap { userService.findById(it) }
+        .flatMap { userService.delete(it.id!!).then(ServerResponse.noContent().build()) }
+        .switchIfEmpty { ServerResponse.notFound().build() }
+        .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
 
     fun findById(request: ServerRequest): Mono<ServerResponse> = request
         .pathVariable("id")
         .toMono()
         .map { it.toLong() }
         .flatMap { userService.findById(it) }
-        .flatMap { ServerResponse.ok().bodyValue(it) }
+        .flatMap { ServerResponse.ok().json().bodyValue(it) }
         .switchIfEmpty { ServerResponse.notFound().build() }
         .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
 
