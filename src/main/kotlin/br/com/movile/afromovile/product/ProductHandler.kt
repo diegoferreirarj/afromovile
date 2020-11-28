@@ -27,7 +27,7 @@ class ProductHandler(private val service: ProductService) {
         val id = request.pathVariable("id").toLongOrNull()
 
         return if (id == null) {
-            ServerResponse.badRequest().json().bodyValueAndAwait(ErrorMessage("`Id` is mandatory"))
+            ServerResponse.badRequest().json().bodyValueAndAwait(ErrorMessage("Valid `Id` is mandatory"))
         } else {
             val product = service.findById(id)
             if (product == null) ServerResponse.notFound().buildAndAwait()
@@ -39,7 +39,7 @@ class ProductHandler(private val service: ProductService) {
         val id = request.pathVariable("id").toLongOrNull()
 
         return if (id == null) {
-            ServerResponse.badRequest().json().bodyValueAndAwait(ErrorMessage("`Id` is mandatory"))
+            ServerResponse.badRequest().json().bodyValueAndAwait(ErrorMessage("Valid `Id` is mandatory"))
         } else {
             if (service.delete(id)) ServerResponse.noContent().buildAndAwait()
             else ServerResponse.status(HttpStatus.NOT_FOUND).json().bodyValueAndAwait(ErrorMessage("Resource $id not found"))

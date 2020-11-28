@@ -1,4 +1,4 @@
-# POC WebFlux-R2DBC H2-Kotlin
+# Afromovile WebFlux-R2DBC H2-Kotlin
 
 Test project for Spring Boot 2.4.0/Kotlin with coroutines integration and R2DBC repositories.
 
