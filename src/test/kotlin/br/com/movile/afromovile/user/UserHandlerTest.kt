@@ -1,6 +1,5 @@
 package br.com.movile.afromovile.user
 
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -30,7 +29,7 @@ internal class UserHandlerTest {
 
     @Test
     fun findAll() {
-        coEvery { service.findAll() } returns listOf(createUser(id = 1), createUser(id=2)).toFlux()
+        every { service.findAll() } returns listOf(createUser(id = 1), createUser(id=2)).toFlux()
 
         runBlocking {
             val response = handler.findAll(request).block()
@@ -40,7 +39,7 @@ internal class UserHandlerTest {
 
     @Test
     fun save() {
-        coEvery { service.save(any()) } returns createUser(id = 1).toMono()
+        every { service.save(any()) } returns createUser(id = 1).toMono()
         every { request.bodyToMono<UserDto>() } returns createUser().toMono()
 
         runBlocking {
@@ -51,18 +50,19 @@ internal class UserHandlerTest {
 
     @Test
     fun delete() {
-        coEvery { service.delete(1) } returns Mono.empty()
+        every { service.delete(1) } returns Mono.empty()
+        every { service.findById(1) } returns createUser(id = 1).toMono()
         every { request.pathVariable("id") } returns "1"
 
         runBlocking {
             val response = handler.delete(request).block()
-            assertEquals(response?.statusCode(), HttpStatus.OK)
+            assertEquals(HttpStatus.NO_CONTENT, response?.statusCode())
         }
     }
 
     @Test
     fun findById() {
-        coEvery { service.findById(1) } returns createUser(id = 1).toMono()
+        every { service.findById(1) } returns createUser(id = 1).toMono()
         every { request.pathVariable("id") } returns "1"
 
         runBlocking {

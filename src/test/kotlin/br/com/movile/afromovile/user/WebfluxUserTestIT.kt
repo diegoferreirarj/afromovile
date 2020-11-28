@@ -52,7 +52,6 @@ internal class WebfluxUserTestIT(
     @Test
     fun `existing user returns OK`() {
         val expectedUser = userRepository.findAll().collectList().block()?.firstOrNull { it.id != null }?.toDto()
-
         assertThat(expectedUser).isNotNull
 
         val response = client.get()

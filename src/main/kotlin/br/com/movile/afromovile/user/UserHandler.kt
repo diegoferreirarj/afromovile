@@ -34,12 +34,10 @@ class UserHandler(private val userService: UserService) {
     fun findById(request: ServerRequest): Mono<ServerResponse> = request
         .pathVariable("id")
         .toMono()
-        .map { id -> id.toLong() }
-        .flatMap { id ->
-            userService.findById(id)
-                        .flatMap { user -> ServerResponse.ok().bodyValue(user) }
-                        .switchIfEmpty { ServerResponse.notFound().build() }
-        }
+        .map { it.toLong() }
+        .flatMap { userService.findById(it) }
+        .flatMap { ServerResponse.ok().bodyValue(it) }
+        .switchIfEmpty { ServerResponse.notFound().build() }
         .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
 
 }

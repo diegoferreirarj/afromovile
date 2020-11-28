@@ -63,7 +63,7 @@ internal class WebfluxProductTestIT(
         assertThat(expectedProduct).isNotNull
 
         val response = client.get()
-                .uri("/products/1")
+                .uri("/products/${expectedProduct.id}")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk
