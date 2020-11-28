@@ -23,21 +23,21 @@ class UserHandler(private val userService: UserService) {
         .flatMap { ServerResponse.status(CREATED).json().body(it, UserDto::class.java) }
         .onErrorResume { ServerResponse.badRequest().build() }
 
-    fun delete(request: ServerRequest): Mono<ServerResponse> = request
-        .pathVariable("id")
-        .toMono()
-        .map { it.toLong() }
-        .flatMap { userService.findById(it) }
-        .flatMap { userService.delete(it.id!!).then(ServerResponse.noContent().build()) }
-        .switchIfEmpty { ServerResponse.notFound().build() }
-        .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
-
     fun findById(request: ServerRequest): Mono<ServerResponse> = request
         .pathVariable("id")
         .toMono()
         .map { it.toLong() }
         .flatMap { userService.findById(it) }
         .flatMap { ServerResponse.ok().json().bodyValue(it) }
+        .switchIfEmpty { ServerResponse.notFound().build() }
+        .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
+
+    fun delete(request: ServerRequest): Mono<ServerResponse> = request
+        .pathVariable("id")
+        .toMono()
+        .map { it.toLong() }
+        .flatMap { userService.findById(it) }
+        .flatMap { userService.delete(it.id!!).then(ServerResponse.noContent().build()) }
         .switchIfEmpty { ServerResponse.notFound().build() }
         .onErrorResume { ServerResponse.badRequest().json().bodyValue(ErrorMessage("Valid `Id` is mandatory")) }
 
